@@ -28,6 +28,11 @@ angular.module('ngFireQbotApp')
     templateUrl: 'views/login.html',
     controller: 'LoginCtrl'
   },
+  'register': {
+    url: '/register',
+    templateUrl: 'views/register.html',
+    controller: 'LoginCtrl'
+  },
   'account': {
     url: '/account',
     templateUrl: 'views/account.html',
@@ -88,7 +93,7 @@ angular.module('ngFireQbotApp')
 */
 .run(['$rootScope', '$location', '$state', 'simpleLogin', 'STATES', 'loginRedirectPath', 'homeRedirectPath',
 function($rootScope, $location, $state, simpleLogin, STATES, loginRedirectPath, homeRedirectPath) {
-  
+
   // watch for login status changes and redirect if appropriate
   simpleLogin.watch(check, $rootScope);
 
