@@ -1,0 +1,25 @@
+<h2>Register Page</h2>
+
+<form role="form">
+  <p class="form-group">
+    <label for="registerName">name</label>
+    <input id="registerName" required name="name" type="text" ng-model="name" class="form-control" />
+  </p>
+  <p class="form-group">
+    <label for="registerEmail">email</label>
+    <input id="registerEmail" required name="email" type="email" ng-model="email" class="form-control" />
+  </p>
+  <p class="form-group">
+    <label for="registerPass">password</label>
+    <input id="registerPass" required name="pass" type="password" ng-model="pass" class="form-control" />
+  </p>
+  <p class="form-group" ng-cloak ng-show="createMode">
+    <label for="registerConfirm">confirm pass</label>
+    <input id="registerConfirm" required name="confirm" type="password" ng-model="confirm" class="form-control" />
+  </p>
+
+  <p>
+    <button  class="btn btn-primary" ng-click="createAccount(email, pass, confirm, name)">Register</button>
+  </p>
+</form>
+<p ng-show="err" class="bg-danger">{{err}}</p>
