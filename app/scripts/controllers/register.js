@@ -8,7 +8,7 @@
  * Controller of the ngFireQbotApp
  */
 angular.module('ngFireQbotApp')
-  .controller('RegisterCtrl', function ($scope) {
+  .controller('RegisterCtrl', function ($scope, simpleLogin, $state) {
     $scope.createAccount = function(email, pass, confirm, name) {
       $scope.err = null;
       if( !pass ) {

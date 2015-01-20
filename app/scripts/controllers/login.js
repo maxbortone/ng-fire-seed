@@ -19,20 +19,6 @@ angular.module('ngFireQbotApp')
       simpleLogin.passwordLogin(email, pass).then(redirect, showError);
     };
 
-    $scope.createAccount = function(email, pass, confirm, name) {
-      $scope.err = null;
-      if( !pass ) {
-        $scope.err = 'Please enter a password';
-      }
-      else if( pass !== confirm ) {
-        $scope.err = 'Passwords do not match';
-      }
-      else {
-        simpleLogin.createAccount(email, pass, name)
-          .then(redirect, showError);
-      }
-    };
-
 
     function redirect() {
       $state.go('account');
