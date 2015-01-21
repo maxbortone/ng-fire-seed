@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
+angular.module('simpleLogin', ['firebase', 'firebase.utils'])
 
 // a simple wrapper on simpleLogin.getUser() that rejects the promise
 // if the user does not exists (i.e. makes user required)
@@ -12,13 +12,13 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
   };
 }])
 
-.factory('simpleLogin', ['$firebaseAuth', 'fbutil', 'createProfile', 'changeEmail',
-function($firebaseAuth, fbutil, createProfile, changeEmail) {
+.factory('simpleLogin', ['$firebaseAuth', 'fbutil', 'createProfile',
+function($firebaseAuth, fbutil, createProfile) {
   var auth = $firebaseAuth(fbutil.ref());
   var listeners = [];
 
-  function statusChange() {
-    fns.user = auth.$getAuth();
+  function statusChange(authData) {
+    fns.user = authData;
     angular.forEach(listeners, function(fn) {
       fn(fns.user);
     });
@@ -68,8 +68,8 @@ function($firebaseAuth, fbutil, createProfile, changeEmail) {
       return auth.$changePassword({email: email, oldPassword: oldpass, newPassword: newpass});
     },
 
-    changeEmail: function(password, oldEmail, newEmail) {
-      return changeEmail(password, oldEmail, newEmail, this);
+    changeEmail: function(pass, oldemail, newemail) {
+      return auth.$changeEmail({oldEmail: oldemail, newEmail: newemail, password: pass});
     },
 
     removeUser: function(email, pass) {
@@ -92,8 +92,9 @@ function($firebaseAuth, fbutil, createProfile, changeEmail) {
     }
   };
 
-  auth.$onAuth(statusChange);
-  statusChange();
+  auth.$onAuth(function(authData) {
+    statusChange(authData);
+  });
 
   return fns;
 }])

@@ -8,23 +8,21 @@
  */
 angular.module('ngFireQbotApp')
   .controller('LoginCtrl', function ($scope, simpleLogin, $state) {
-    $scope.createMode = false;
     $scope.oauthLogin = function(provider) {
       $scope.err = null;
-      simpleLogin.oauthLogin(provider).then(redirect, showError);
+      simpleLogin.oauthLogin(provider).then(success, failed);
     };
 
     $scope.passwordLogin = function(email, pass) {
       $scope.err = null;
-      simpleLogin.passwordLogin(email, pass).then(redirect, showError);
+      simpleLogin.passwordLogin(email, pass).then(success, failed);
     };
 
-
-    function redirect() {
+    function success() {
       $state.go('account');
     }
 
-    function showError(err) {
+    function failed(err) {
       $scope.err = err;
     }
 

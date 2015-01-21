@@ -28,10 +28,19 @@ angular.module('ngFireQbotApp')
     templateUrl: 'views/login.html',
     controller: 'LoginCtrl'
   },
+  'logout': {
+    url: '/logout',
+    controller: function(user, simpleLogin) {
+        if (user) {
+          return simpleLogin.logout();
+        }
+    },
+    authRequired: true
+  },
   'register': {
     url: '/register',
     templateUrl: 'views/register.html',
-    controller: 'LoginCtrl'
+    controller: 'RegisterCtrl'
   },
   'account': {
     url: '/account',
@@ -101,6 +110,7 @@ function($rootScope, $location, $state, simpleLogin, STATES, loginRedirectPath, 
   // this redirects to the login page whenever that is encountered
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
     if( angular.isObject(error) && error.authRequired ) {
+      console.log('not logged in: redirecting you');
       $state.go(loginRedirectPath);
     }
   });
@@ -109,8 +119,10 @@ function($rootScope, $location, $state, simpleLogin, STATES, loginRedirectPath, 
     // used by the changeEmail functionality so the user
     // isn't redirected to the login screen while we switch
     // out the accounts (see changeEmail.js)
+    // user here refers to the user property in the fns object returned by simpleLogin
     if( $rootScope.authChangeInProgress ) { return; }
     if (!user && $state.current.authRequired) {
+      console.log('logged out: redirecting you');
       $state.go(homeRedirectPath);
     }
   }
