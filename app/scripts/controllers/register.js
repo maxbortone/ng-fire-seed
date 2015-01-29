@@ -2,21 +2,19 @@
 
 /**
  * @ngdoc function
- * @name ngFireQbotApp.controller:RegisterCtrl
+ * @name ngFireSeedApp.controller:RegisterCtrl
  * @description
  * # RegisterCtrl
- * Controller of the ngFireQbotApp
+ * Controller of the ngFireSeedApp
  */
-angular.module('ngFireQbotApp')
-  .controller('RegisterCtrl', function ($scope, simpleLogin, $state) {
+angular.module('ngFireSeedApp')
+  .controller('RegisterCtrl', function ($scope, utils, simpleLogin, $state) {
     $scope.createAccount = function(email, pass, confirm, name) {
-      console.log('working on it');
-      $scope.err = null;
       if( !pass ) {
-        $scope.err = 'Please enter a password';
+        utils.toast('Please enter a password', 'warning');
       }
       else if( pass !== confirm ) {
-        $scope.err = 'Passwords do not match';
+        utils.toast('Passwords do not match', 'warning');
       }
       else {
         simpleLogin.createAccount(email, pass, name)
@@ -26,10 +24,11 @@ angular.module('ngFireQbotApp')
 
 
     function success() {
+      utils.toast('You new account has been created successfully', 'success');
       $state.go('account');
     }
 
     function failed(err) {
-      $scope.err = err;
+      utils.toast(err, 'danger');
     }
   });

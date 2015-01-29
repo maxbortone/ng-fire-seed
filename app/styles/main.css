@@ -31,6 +31,30 @@ body {
   border-top: 1px solid #e5e5e5;
 }
 
+/* Chat */
+.list-group-item-footer {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 12px;
+  text-align: right;
+}
+
+.active .list-group-item-footer {
+  color: #0C518C;
+}
+
+.badge-primary {
+  background-color: #0C518C;
+}
+
+.badge-warning {
+  background-color: #BA0D07;
+}
+
+.badge-warning > a {
+  color: #fff;
+}
+
 /* Customize container */
 @media (min-width: 768px) {
   .container {

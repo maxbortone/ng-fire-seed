@@ -2,16 +2,17 @@
 
 /**
  * @ngdoc overview
- * @name ngFireQbotApp
+ * @name ngFireSeedApp
  * @description
- * # ngFireQbotApp
+ * # ngFireSeedApp
  *
  * Main module of the application.
  */
-angular.module('ngFireQbotApp', [
+angular.module('ngFireSeedApp', [
     'ngResource',
     'ui.router',
     'firebase',
     'firebase.utils',
-    'simpleLogin'
+    'simpleLogin',
+    'angularFileUpload'
   ]);

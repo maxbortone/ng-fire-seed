@@ -1,13 +1,29 @@
-
 <h2>Chat</h2>
 
-<form>
-  <input placeholder="Message..." ng-model="newMessage">
-  <button type="submit" ng-click="addMessage(newMessage);newMessage = null;">send</button>
-</form>
-
-<ul id="messages" ng-show="messages.length">
-  <li ng-repeat="message in messages | reverse">{{message.text}}</li>
+<ul id="messages" class="list-group" ng-show="messages.length">
+  <li class="list-group-item" ng-repeat="message in messages" ng-class="{active: uid === message.uid}">
+    <span class="badge badge-primary pull-right" ng-show="uid === message.uid">
+      <a href="" ng-click="deleteMessage($index, uid, message.$id)">
+        <i class="glyphicon glyphicon-remove"></i>
+      </a>
+    </span>
+    <h4 class="list-group-item-heading">{{ message.user }}:</h4>
+    <p class="list-group-item-text">
+      {{message.text}}
+    </p>
+    <div class="list-group-item-footer">
+        {{ message.sent | date : "MMM d, y 'at' 'h:mm a"}}
+    </div>
+  </li>
 </ul>
 
-<p class="alert alert-danger" ng-show="err">{{err}}</p>
+<form>
+  <div class="input-group">
+    <input class="form-control" placeholder="Message..." ng-model="newMessage">
+    <span class="input-group-btn">
+      <button class="btn btn-success" type="submit" ng-click="addMessage(newMessage, profile.name, uid);newMessage = null;">
+        <i class="glyphicon glyphicon-send"></i>
+      </button>
+    </span>
+  </div>
+</form>

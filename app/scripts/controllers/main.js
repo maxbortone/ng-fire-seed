@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name ngFireQbotApp.controller:MainCtrl
+ * @name ngFireSeedApp.controller:MainCtrl
  * @description
  * # MainCtrl
- * Controller of the ngFireQbotApp
+ * Controller of the ngFireSeedApp
  */
-angular.module('ngFireQbotApp')
+angular.module('ngFireSeedApp')
   .controller('MainCtrl', function ($scope, user) {
-    $scope.currentUser = user;
+    $scope.greeting = user ? 'Hello ' + user.uid : 'Hello stranger!';
   });

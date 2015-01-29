@@ -101,7 +101,7 @@ function($firebaseAuth, fbutil, createProfile) {
 
 .factory('createProfile', ['fbutil', '$q', '$timeout', function(fbutil, $q, $timeout) {
   return function(id, email, name) {
-    var ref = fbutil.ref('users', id), def = $q.defer();
+    var ref = fbutil.ref('users/' + id + '/profile'), def = $q.defer();
     ref.set({email: email, name: name||firstPartOfEmail(email)}, function(err) {
       $timeout(function() {
         if( err ) {

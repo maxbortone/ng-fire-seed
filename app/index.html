@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="ngFireQbotApp">
+  <body ng-app="ngFireSeedApp">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -24,23 +24,23 @@
     <div class="container">
       <div class="header">
         <ul class="nav nav-pills pull-right">
-          <li class="active"><a ui-sref="main">Home</a></li>
-          <!-- //angularfire -->
-          <li><a ui-sref="chat">chat</a></li>
-          <li>
-            <a ng-hide-auth="" ui-sref="login">log in</a>
-            <a ng-show-auth="" ui-sref="account">account</a>
-            <a ng-show-auth="" ui-sref="logout">logout</a>
-          </li>
+          <li><a ng-show-auth="" ui-sref="home">Home</a></li>
+          <li><a ng-show-auth="" ui-sref="chat">Chat</a></li>
+          <li><a ng-show-auth="" ui-sref="account">Account</a></li>
+          <li><a ng-show-auth="" ui-sref="logout">Logout</a></li>
+
+          <li><a ng-hide-auth="" ui-sref="register">Register</a></li>
+          <li><a ng-hide-auth="" ui-sref="login">Log in</a></li>
         </ul>
-        <h3 class="text-muted">qBot</h3>
+        <h3><a ui-sref="main">qBot</a></h3>
       </div>
 
       <div ui-view=""></div>
 
-      <div class="footer">
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team, and from Firebase</p>
-      </div>
+      <p ng-repeat="toast in toasts" class="alert alert-{{ toast.type }}" ng-show="toasts.length">
+        {{ toast.text }}
+      </p>
+
     </div>
 
 
@@ -71,6 +71,7 @@
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/firebase/firebase.js"></script>
     <script src="bower_components/angularfire/dist/angularfire.js"></script>
+    <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -79,16 +80,19 @@
         <script src="scripts/routes.js"></script>
         <script src="scripts/angularfire/config.js"></script>
         <script src="scripts/angularfire/firebase.utils.js"></script>
-        <script src="scripts/angularfire/changeEmail.js"></script>
         <script src="scripts/angularfire/simpleLogin.js"></script>
         <script src="scripts/filters/reverse.js"></script>
+        <script src="scripts/services/utils.js"></script>
         <script src="scripts/controllers/main.js"></script>
+        <script src="scripts/controllers/home.js"></script>
         <script src="scripts/controllers/login.js"></script>
         <script src="scripts/controllers/register.js"></script>
         <script src="scripts/controllers/account.js"></script>
         <script src="scripts/controllers/chat.js"></script>
         <script src="scripts/directives/ngShowAuth.js"></script>
         <script src="scripts/directives/ngHideAuth.js"></script>
+        <script src="scripts/services/chat.js"></script>
+        <script src="scripts/services/profile.js"></script>
         <!-- endbuild -->
 </body>
 </html>

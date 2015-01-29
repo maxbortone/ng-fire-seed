@@ -1,33 +1,36 @@
 'use strict';
 /**
  * @ngdoc function
- * @name ngFireQbotApp.controller:ChatCtrl
+ * @name ngFireSeedApp.controller:ChatCtrl
  * @description
  * # ChatCtrl
  * A demo of using AngularFire to manage a synchronized list.
  */
-angular.module('ngFireQbotApp')
-  .controller('ChatCtrl', function ($scope, fbutil, $timeout) {
+angular.module('ngFireSeedApp')
+  .controller('ChatCtrl', function ($scope, $rootScope, utils, profile, Chat) {
+    $scope.profile = profile;
+    $scope.uid = $rootScope.currentUser.uid;
+
     // synchronize a read-only, synchronized array of messages, limit to most recent 10
-    $scope.messages = fbutil.syncArray('messages', {limitToLast: 10});
+    Chat.getMessages().then(function(data) {
+      $scope.messages = data;
+    });
 
-    // display any errors
-    $scope.messages.$loaded().catch(alert);
-
-    // provide a method for adding a message
-    $scope.addMessage = function(newMessage) {
-      if( newMessage ) {
-        // push a message to the end of the array
-        $scope.messages.$add({text: newMessage})
-          // display any errors
-          .catch(alert);
+    // provide a method to add a message
+    $scope.addMessage = function (msg, name, uid) {
+      if (msg) {
+        Chat.addMessage(msg, name, uid).catch(function (error) {
+          utils.toast(error, 'danger');
+        });
+      } else {
+        utils.toast('Will not send an empty message just for you!', 'warning');
       }
     };
 
-    function alert(msg) {
-      $scope.err = msg;
-      $timeout(function() {
-        $scope.err = null;
-      }, 5000);
-    }
+    // provide a method to delete a message
+    $scope.deleteMessage = function (index, uid, mid) {
+      Chat.deleteMessage(index, uid, mid).catch(function (error) {
+        utils.toast(error, 'danger');
+      });
+    };
   });

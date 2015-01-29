@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ngFireQbotApp')
+angular.module('ngFireSeedApp')
 
 .constant('STATES', {
   'main': {
@@ -17,11 +17,27 @@ angular.module('ngFireQbotApp')
       }]
     }
   },
+  'home': {
+    url: '/home',
+    templateUrl: 'views/home.html',
+    controller: 'HomeCtrl',
+    authRequired: true,
+    resolve: {
+      profile: ['Profile', 'user', function(Profile, user) {
+        return Profile.setProfile(user.uid);
+      }]
+    }
+  },
   'chat': {
     url: '/chat',
     templateUrl: 'views/chat.html',
     controller: 'ChatCtrl',
-    authRequired: true
+    authRequired: true,
+    resolve: {
+      profile: ['Profile', 'user', function(Profile, user) {
+        return Profile.setProfile(user.uid);
+      }]
+    }
   },
   'login': {
     url: '/login',
@@ -30,7 +46,7 @@ angular.module('ngFireQbotApp')
   },
   'logout': {
     url: '/logout',
-    controller: function(user, simpleLogin) {
+    controller: function(simpleLogin, user) {
         if (user) {
           return simpleLogin.logout();
         }
@@ -90,7 +106,7 @@ angular.module('ngFireQbotApp')
       $stateProvider.state(view, state);
     }
   });
-  // routes which are not in our map are redirected to /home
+  // routes which are not in our map are redirected to main page
   $urlRouterProvider.otherwise('/');
 }])
 
@@ -100,30 +116,31 @@ angular.module('ngFireQbotApp')
 * for changes in auth status which might require us to navigate away from a path
 * that we can no longer view.
 */
-.run(['$rootScope', '$location', '$state', 'simpleLogin', 'STATES', 'loginRedirectPath', 'homeRedirectPath',
-function($rootScope, $location, $state, simpleLogin, STATES, loginRedirectPath, homeRedirectPath) {
+.run(['$rootScope', '$location', '$state', 'simpleLogin', 'STATES', 'utils', 'loginRedirectPath', 'logoutRedirectPath',
+function($rootScope, $location, $state, simpleLogin, STATES, utils, loginRedirectPath, logoutRedirectPath) {
+  // initialize root variable for notifications
+  $rootScope.toasts = [];
 
   // watch for login status changes and redirect if appropriate
-  simpleLogin.watch(check, $rootScope);
+  simpleLogin.watch(checkLogout, $rootScope);
 
   // some of our routes may reject resolve promises with the special {authRequired: true} error
   // this redirects to the login page whenever that is encountered
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
     if( angular.isObject(error) && error.authRequired ) {
-      console.log('not logged in: redirecting you');
+      utils.toast('This page needs authentication, log in please.', 'warning');
       $state.go(loginRedirectPath);
     }
   });
 
-  function check(user) {
-    // used by the changeEmail functionality so the user
-    // isn't redirected to the login screen while we switch
-    // out the accounts (see changeEmail.js)
-    // user here refers to the user property in the fns object returned by simpleLogin
-    if( $rootScope.authChangeInProgress ) { return; }
+  function checkLogout(user) {
+    // redirect to homepage when user logs out
     if (!user && $state.current.authRequired) {
-      console.log('logged out: redirecting you');
-      $state.go(homeRedirectPath);
+      $state.go(logoutRedirectPath);
+      $rootScope.currentUser = null;
+      utils.toast('You logged out successfully', 'success');
+    } else if (user) {
+      $rootScope.currentUser = user;
     }
   }
 }

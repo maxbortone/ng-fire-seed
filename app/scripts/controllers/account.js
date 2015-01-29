@@ -6,7 +6,7 @@
  * # AccountCtrl
  * Provides rudimentary account management functions.
  */
-angular.module('ngFireQbotApp')
+angular.module('ngFireSeedApp')
   .controller('AccountCtrl', function ($scope, $rootScope, $state, $q, user, simpleLogin, fbutil, $timeout) {
     $scope.user = user;
     $scope.messages = [];
@@ -74,13 +74,13 @@ angular.module('ngFireQbotApp')
       if( profile ) {
         profile.$destroy();
       }
-      profile = fbutil.syncObject('users/'+user.uid);
+      profile = fbutil.syncObject('users/'+user.uid + '/profile');
       profile.$bindTo($scope, 'profile');
     }
 
     function removeProfile(uid) {
       var d = $q.defer();
-      var profileRef = fbutil.ref('users', uid);
+      var profileRef = fbutil.ref('users/' + uid + '/profile');
       profileRef.remove(function(err) {
         if (err) {
           d.reject(err);

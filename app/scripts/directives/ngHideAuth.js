@@ -1,13 +1,13 @@
 
 /**
  * @ngdoc function
- * @name ngFireQbotApp.directive:ngHideAuth
+ * @name ngFireSeedApp.directive:ngHideAuth
  * @description
  * # ngHideAuthDirective
  * A directive that shows elements only when user is logged out. It also waits for simpleLogin
  * to be initialized so there is no initial flashing of incorrect state.
  */
-angular.module('ngFireQbotApp')
+angular.module('ngFireSeedApp')
   .directive('ngHideAuth', ['simpleLogin', '$timeout', function (simpleLogin, $timeout) {
     'use strict';
     var isLoggedIn;
@@ -28,7 +28,7 @@ angular.module('ngFireQbotApp')
         }
 
         simpleLogin.watch(update, scope);
-        simpleLogin.getUser(update);
+        //simpleLogin.getUser(update);
       }
     };
   }]);

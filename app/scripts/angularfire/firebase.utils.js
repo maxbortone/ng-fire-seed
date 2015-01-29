@@ -5,6 +5,10 @@ angular.module('firebase.utils', ['firebase', 'firebase.config'])
     'use strict';
 
     return {
+      sync: function(path, factoryConfig) { // jshint ignore:line
+        return syncData.apply(null, arguments);
+      },
+
       syncObject: function(path, factoryConfig) { // jshint ignore:line
         return syncData.apply(null, arguments).$asObject();
       },
